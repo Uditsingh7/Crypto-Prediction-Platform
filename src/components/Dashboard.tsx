@@ -1,103 +1,30 @@
+'use client'
+
 import { useState } from 'react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableRow, TableHeader } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ArrowUpIcon, ArrowDownIcon, TrendingUp, TrendingDown, AlertTriangle, Info } from 'lucide-react'
-
-// Mock data for demonstration purposes
-const cryptoPredictions = [
-  {
-    coin: "Bitcoin",
-    symbol: "BTC",
-    currentPrice: 50000,
-    sentiment: "Bullish",
-    marketCondition: "Potential Reversal",
-    sevenDayPrediction: 52000,
-    fourteenDayPrediction: 53000,
-    tradingVolume: 1232222,
-    keyEvents: "Harvest 2.0",
-    technicalIndicators: {
-      rsi: 65,
-      mfi: 70,
-      macd: 500,
-      adx: 30,
-      obv: 1000000,
-      atr: 2000
-    }
-  },
-  {
-    coin: "Ethereum",
-    symbol: "ETH",
-    currentPrice: 3000,
-    sentiment: "Neutral",
-    marketCondition: "Potential Reversal",
-    sevenDayPrediction: 3100,
-    fourteenDayPrediction: 3200,
-    tradingVolume: 1232222,
-    keyEvents: "Harvest 2.0",
-    technicalIndicators: {
-      rsi: 55,
-      mfi: 52,
-      macd: 25,
-      adx: 20,
-      obv: 500000,
-      atr: 100
-    }
-  },
-  {
-    coin: "Cardano",
-    symbol: "ADA",
-    currentPrice: 1.2,
-    sentiment: "Bearish",
-    marketCondition: "Overbought Zone",
-    sevenDayPrediction: 1.1,
-    fourteenDayPrediction: 1.0,
-    tradingVolume: 1232222,
-    keyEvents: "Harvest 2.0",
-    technicalIndicators: {
-      rsi: 75,
-      mfi: 80,
-      macd: -0.02,
-      adx: 35,
-      obv: -100000,
-      atr: 0.05
-    }
-  },
-  {
-    coin: "Solana",
-    symbol: "SOL",
-    currentPrice: 150,
-    sentiment: "Bullish",
-    marketCondition: "Moderate Risk",
-    sevenDayPrediction: 160,
-    fourteenDayPrediction: 165,
-    tradingVolume: 1232222,
-    keyEvents: "Harvest 2.0",
-    technicalIndicators: {
-      rsi: 62,
-      mfi: 65,
-      macd: 3,
-      adx: 25,
-      obv: 200000,
-      atr: 10
-    }
-  },
-]
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
+import { TrendingUp, TrendingDown, AlertTriangle, Info } from 'lucide-react'
+import predData from './predData'
 
 export default function CryptoAdvisoryDashboard() {
   const [expandedRow, setExpandedRow] = useState<string | null>(null)
+ const cryptoPredictions = predData
+
 
   const getSentimentBadge = (sentiment: string) => {
     switch (sentiment.toLowerCase()) {
       case "bullish":
         return <Badge className="bg-green-500">Bullish</Badge>
+      case "strong bullish":
+        return <Badge className="bg-green-700">Strong Bullish</Badge>
       case "bearish":
         return <Badge className="bg-red-500">Bearish</Badge>
-      case "neutral":
-        return <Badge className="bg-yellow-500">Neutral</Badge>
+      case "hold":
+        return <Badge className="bg-yellow-500">Hold</Badge>
       default:
         return <Badge className="bg-gray-500">Unknown</Badge>
     }
@@ -105,12 +32,12 @@ export default function CryptoAdvisoryDashboard() {
 
   const getMarketConditionBadge = (condition: string) => {
     switch (condition.toLowerCase()) {
-      case "overbought zone":
-        return <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Overbought Zone</Badge>
-      case "potential reversal":
-        return <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Potential Reversal</Badge>
-      case "moderate risk":
-        return <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Moderate Risk</Badge>
+      case "overbought - potential reversal":
+        return <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Overbought - Potential Reversal</Badge>
+      case "oversold - potential reversal":
+        return <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Oversold - Potential Reversal</Badge>
+      case "neutral":
+        return <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Neutral</Badge>
       default:
         return <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">Unknown</Badge>
     }
@@ -125,24 +52,6 @@ export default function CryptoAdvisoryDashboard() {
     } else {
       return null
     }
-  }
-
-  const getCautionIcon = (rsi: number, mfi: number) => {
-    if (rsi > 70 || rsi < 30 || mfi > 80 || mfi < 20) {
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <AlertTriangle className="text-yellow-500" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Caution: Potential overbought/oversold condition</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )
-    }
-    return null
   }
 
   const getAdvice = (crypto: typeof cryptoPredictions[0]) => {
@@ -160,6 +69,21 @@ export default function CryptoAdvisoryDashboard() {
     }
   }
 
+  const ConfidenceTooltip = ({ children, content }: { children: React.ReactNode; content: string }) => (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="flex items-center gap-1 cursor-help">
+            {children}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{content}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-6xl mx-auto">
@@ -175,8 +99,16 @@ export default function CryptoAdvisoryDashboard() {
                 <TableHead>Current Price</TableHead>
                 <TableHead>Sentiment</TableHead>
                 <TableHead>Market Condition</TableHead>
-                <TableHead>7-Day Forecast</TableHead>
-                <TableHead>14-Dat Forecast</TableHead>
+                <TableHead>
+                  <ConfidenceTooltip content="Moderate confidence: Based on short-term market analysis">
+                    7-Day Forecast <Info className="w-4 h-4 text-muted-foreground" />
+                  </ConfidenceTooltip>
+                </TableHead>
+                <TableHead>
+                  <ConfidenceTooltip content="Lower confidence: Long-term predictions are subject to higher uncertainty">
+                    14-Day Forecast <Info className="w-4 h-4 text-muted-foreground" />
+                  </ConfidenceTooltip>
+                </TableHead>
                 <TableHead>Technical Indicator</TableHead>
               </TableRow>
             </TableHeader>
@@ -206,12 +138,10 @@ export default function CryptoAdvisoryDashboard() {
                       {getPredictionTrend(crypto.currentPrice, crypto.sevenDayPrediction)}
                       ${crypto.sevenDayPrediction.toLocaleString()}
                     </TableCell>
-
-                    <TableCell>
-                      {getPredictionTrend(crypto.currentPrice, crypto.sevenDayPrediction)}
-                      ${crypto.sevenDayPrediction.toLocaleString()}
+                    <TableCell className="">
+                      {getPredictionTrend(crypto.currentPrice, crypto.fourteenDayPrediction)}
+                      ${crypto.fourteenDayPrediction.toLocaleString()}
                     </TableCell>
-
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
@@ -227,46 +157,32 @@ export default function CryptoAdvisoryDashboard() {
                           <div className="grid gap-4 py-4">
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">RSI:</span>
-                              <span>{crypto.technicalIndicators.rsi} ({crypto.technicalIndicators.rsi > 70 ? 'Overbought' : crypto.technicalIndicators.rsi < 30 ? 'Oversold' : 'Neutral'})</span>
+                              <span>{crypto.technicalIndicators.RSI} ({crypto.technicalIndicators.RSI > 70 ? 'Overbought' : crypto.technicalIndicators.RSI < 30 ? 'Oversold' : 'Neutral'})</span>
                             </div>
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">MFI:</span>
-                              <span>{crypto.technicalIndicators.mfi} ({crypto.technicalIndicators.mfi > 80 ? 'Overbought' : crypto.technicalIndicators.mfi < 20 ? 'Oversold' : 'Neutral'})</span>
+                              <span>{crypto.technicalIndicators.MFI} ({crypto.technicalIndicators.MFI > 80 ? 'Overbought' : crypto.technicalIndicators.MFI < 20 ? 'Oversold' : 'Neutral'})</span>
                             </div>
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">MACD:</span>
-                              <span>{crypto.technicalIndicators.macd}</span>
+                              <span>{crypto.technicalIndicators.MACD}</span>
                             </div>
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">ADX:</span>
-                              <span>{crypto.technicalIndicators.adx} ({crypto.technicalIndicators.adx > 25 ? 'Strong Trend' : 'Weak Trend'})</span>
+                              <span>{crypto.technicalIndicators.ADX} ({crypto.technicalIndicators.ADX > 25 ? 'Strong Trend' : 'Weak Trend'})</span>
                             </div>
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">OBV:</span>
-                              <span>{crypto.technicalIndicators.obv.toLocaleString()}</span>
+                              <span>{crypto.technicalIndicators.OBV.toLocaleString()}</span>
                             </div>
                             <div className="grid grid-cols-2 items-center gap-4">
                               <span className="font-medium">ATR:</span>
-                              <span>{crypto.technicalIndicators.atr}</span>
+                              <span>{crypto.technicalIndicators.ATR}</span>
                             </div>
                           </div>
                         </DialogContent>
                       </Dialog>
                     </TableCell>
-
-                    {/* <TableCell className="flex items-center gap-2">
-                    {getPredictionTrend(crypto.currentPrice, crypto.fourteenDayPrediction)}
-                    ${crypto.fourteenDayPrediction.toLocaleString()}
-                  </TableCell> */}
-                    {/* <TableCell>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setExpandedRow(expandedRow === crypto.symbol ? null : crypto.symbol)}
-                    >
-                      {expandedRow === crypto.symbol ? 'Hide Advice' : 'Get Advice'}
-                    </Button>
-                  </TableCell> */}
                   </TableRow>
                   {expandedRow === crypto.symbol && (
                     <TableRow>
