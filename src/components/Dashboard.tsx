@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableRow, TableHeader } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { TrendingUp, TrendingDown, AlertTriangle, Info, DollarSign, Coins } from 'lucide-react'
+import { AlertTriangle, Info, DollarSign, Coins } from 'lucide-react'
 import predData from './predData'
 
 
 export default function CryptoAdvisoryDashboard() {
-  const [expandedRow, setExpandedRow] = useState<string | null>(null)
+  // const [expandedRow, setExpandedRow] = useState<string | null>(null)
 
   const getCryptoIcon = (symbol: string) => {
     switch (symbol.toLowerCase()) {
@@ -54,31 +54,21 @@ export default function CryptoAdvisoryDashboard() {
     }
   }
 
-  const getPredictionTrend = (current: number, prediction: number) => {
-    const percentage = ((prediction - current) / current) * 100
-    if (percentage > 0) {
-      return <TrendingUp className="text-green-500" />
-    } else if (percentage < 0) {
-      return <TrendingDown className="text-red-500" />
-    } else {
-      return null
-    }
-  }
 
-  const getAdvice = (crypto: typeof predData[0]) => {
-    const shortTermTrend = crypto.sevenDayPrediction > crypto.currentPrice
-    const longTermTrend = crypto.fourteenDayPrediction > crypto.currentPrice
+  // const getAdvice = (crypto: typeof predData[0]) => {
+  //   const shortTermTrend = crypto.sevenDayPrediction > crypto.currentPrice
+  //   const longTermTrend = crypto.fourteenDayPrediction > crypto.currentPrice
 
-    if (crypto.sentiment === "Bullish" && shortTermTrend && longTermTrend) {
-      return "Consider increasing your position. The market sentiment is positive, and both short-term and long-term predictions are favorable. However, always be mindful of the risk level."
-    } else if (crypto.sentiment === "Bearish" && !shortTermTrend && !longTermTrend) {
-      return "Consider reducing your exposure or implementing hedging strategies. The market sentiment is negative, and predictions indicate potential downward movement."
-    } else if (crypto.sentiment === "Neutral" && shortTermTrend !== longTermTrend) {
-      return "The market is showing mixed signals. It might be wise to hold your current position and wait for clearer trends before making significant moves."
-    } else {
-      return "Market conditions are uncertain. Diversify your portfolio and avoid making large position changes until the trend becomes clearer."
-    }
-  }
+  //   if (crypto.sentiment === "Bullish" && shortTermTrend && longTermTrend) {
+  //     return "Consider increasing your position. The market sentiment is positive, and both short-term and long-term predictions are favorable. However, always be mindful of the risk level."
+  //   } else if (crypto.sentiment === "Bearish" && !shortTermTrend && !longTermTrend) {
+  //     return "Consider reducing your exposure or implementing hedging strategies. The market sentiment is negative, and predictions indicate potential downward movement."
+  //   } else if (crypto.sentiment === "Neutral" && shortTermTrend !== longTermTrend) {
+  //     return "The market is showing mixed signals. It might be wise to hold your current position and wait for clearer trends before making significant moves."
+  //   } else {
+  //     return "Market conditions are uncertain. Diversify your portfolio and avoid making large position changes until the trend becomes clearer."
+  //   }
+  // }
 
   const ConfidenceTooltip = ({ children, content }: { children: React.ReactNode; content: string }) => (
     <TooltipProvider>
@@ -96,22 +86,45 @@ export default function CryptoAdvisoryDashboard() {
   )
 
 
-  const IndicatorTooltip = ({ label, value, description, interpretation }: { label: string; value: number; description: string; interpretation: string }) => (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="flex items-center gap-2 cursor-help">
-            <Info className="w-4 h-4 text-blue-400" aria-label={`More information about ${label}`} />
-          </div>
-        </TooltipTrigger>
-        <TooltipContent className="bg-gray-700 text-white p-4 rounded-md max-w-md">
-          <h4 className="font-bold mb-2">{label}</h4>
-          <p className="mb-2"><strong>Definition:</strong> {description}</p>
-          <p><strong>Interpretation:</strong> {interpretation}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
+  const IndicatorTooltip = ({
+    label,
+    value,
+    description,
+    interpretation,
+  }: {
+    label: string;
+    value?: number;
+    description: string;
+    interpretation: string;
+  }) => {
+    // Acknowledge `value` to avoid TypeScript error
+    value;
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center gap-2 cursor-help">
+              <Info
+                className="w-4 h-4 text-blue-400"
+                aria-label={`More information about ${label}`}
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-700 text-white p-4 rounded-md max-w-md">
+            <h4 className="font-bold mb-2">{label}</h4>
+            <p className="mb-2">
+              <strong>Definition:</strong> {description}
+            </p>
+            <p>
+              <strong>Interpretation:</strong> {interpretation}
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  };
+
 
   const PredictionTrend = ({ currentPrice, prediction }: { currentPrice: number; prediction: number }) => {
     const isPositive = prediction > currentPrice;
@@ -216,7 +229,7 @@ export default function CryptoAdvisoryDashboard() {
                       </Dialog>
                     </TableCell>
                   </TableRow>
-                  {expandedRow === crypto.symbol && (
+                  {/* {expandedRow === crypto.symbol && (
                     <TableRow>
                       <TableCell colSpan={7}>
                         <div className="p-4 bg-gray-700/50 rounded-md">
@@ -242,7 +255,7 @@ export default function CryptoAdvisoryDashboard() {
                         </div>
                       </TableCell>
                     </TableRow>
-                  )}
+                  )} */}
                 </>
               ))}
             </TableBody>
