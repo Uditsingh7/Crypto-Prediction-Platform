@@ -63,6 +63,18 @@ export default function CryptoAdvisoryDashboard() {
       </Tooltip>
     </TooltipProvider>
   )
+  const InfoTooltip = ({ content }: { content: string }) => (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Info className="w-4 h-4 text-gray-400 inline-block ml-1 cursor-help" />
+        </TooltipTrigger>
+        <TooltipContent className="bg-white text-gray-800 p-2 rounded-md max-w-xs shadow-lg">
+          <p>{content}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
 
   const IndicatorTooltip = ({
     label,
@@ -128,8 +140,14 @@ export default function CryptoAdvisoryDashboard() {
               <TableRow className="border-b border-gray-200">
                 <TableHead className="text-gray-600">Coin</TableHead>
                 <TableHead className="text-gray-600">Current Price</TableHead>
-                <TableHead className="text-gray-600">Sentiment</TableHead>
-                <TableHead className="text-gray-600">Market Condition</TableHead>
+                <TableHead className="text-gray-600">
+                  Sentiment
+                  <InfoTooltip content="Sentiment is calculated based on lagging indicators, providing a historical perspective on market trends." />
+                </TableHead>
+                <TableHead className="text-gray-600">
+                  Market Condition
+                  <InfoTooltip content="Market condition is determined by current indicators like RSI, potentially differing from sentiment." />
+                </TableHead>
                 <TableHead className="text-gray-600">
                   <ConfidenceTooltip content="Moderate confidence: Based on short-term market analysis">
                     7-Day Forecast <Info className="w-4 h-4 text-gray-400 inline-block ml-1" />
