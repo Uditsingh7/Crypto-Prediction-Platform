@@ -24,28 +24,28 @@ export default function CryptoAdvisoryDashboard() {
   const getSentimentBadge = (sentiment: string) => {
     switch (sentiment.toLowerCase()) {
       case "bullish":
-        return <Badge className="bg-green-600 text-white">Bullish</Badge>
+        return <Badge className="bg-green-100 text-green-800">Bullish</Badge>
       case "strong bullish":
-        return <Badge className="bg-green-700 text-white">Strong Bullish</Badge>
+        return <Badge className="bg-green-200 text-green-900">Strong Bullish</Badge>
       case "bearish":
-        return <Badge className="bg-red-600 text-white">Bearish</Badge>
+        return <Badge className="bg-red-100 text-red-800">Bearish</Badge>
       case "hold":
-        return <Badge className="bg-yellow-600 text-white">Hold</Badge>
+        return <Badge className="bg-yellow-100 text-yellow-800">Hold</Badge>
       default:
-        return <Badge className="bg-gray-600 text-white">Unknown</Badge>
+        return <Badge className="bg-gray-100 text-gray-800">Unknown</Badge>
     }
   }
 
   const getMarketConditionBadge = (condition: string) => {
     switch (condition.toLowerCase()) {
       case "overbought - potential reversal":
-        return <Badge className="bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200">Overbought - Potential Reversal</Badge>
+        return <Badge className="bg-red-100 text-red-800">Overbought - Potential Reversal</Badge>
       case "oversold - potential reversal":
-        return <Badge className="bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200">Oversold - Potential Reversal</Badge>
+        return <Badge className="bg-yellow-100 text-yellow-800">Oversold - Potential Reversal</Badge>
       case "neutral":
-        return <Badge className="bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200">Neutral</Badge>
+        return <Badge className="bg-green-100 text-green-800">Neutral</Badge>
       default:
-        return <Badge className="bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200">Unknown</Badge>
+        return <Badge className="bg-gray-100 text-gray-800">Unknown</Badge>
     }
   }
 
@@ -57,7 +57,7 @@ export default function CryptoAdvisoryDashboard() {
             {children}
           </div>
         </TooltipTrigger>
-        <TooltipContent className="bg-gray-700 text-white p-2 rounded-md max-w-xs">
+        <TooltipContent className="bg-white text-gray-800 p-2 rounded-md max-w-xs shadow-lg">
           <p>{content}</p>
         </TooltipContent>
       </Tooltip>
@@ -82,12 +82,12 @@ export default function CryptoAdvisoryDashboard() {
           <TooltipTrigger asChild>
             <div className="flex items-center gap-2 cursor-help">
               <Info
-                className="w-4 h-4 text-blue-400"
+                className="w-4 h-4 text-purple-600"
                 aria-label={`More information about ${label}`}
               />
             </div>
           </TooltipTrigger>
-          <TooltipContent className="bg-gray-700 text-white p-4 rounded-md max-w-md">
+          <TooltipContent className="bg-white text-gray-800 p-4 rounded-md max-w-md shadow-lg">
             <h4 className="font-bold mb-2">{label}</h4>
             <p className="mb-2">
               <strong>Definition:</strong> {description}
@@ -103,83 +103,83 @@ export default function CryptoAdvisoryDashboard() {
 
   const PredictionTrend = ({ currentPrice, prediction }: { currentPrice: number; prediction: number }) => {
     const isPositive = prediction > currentPrice;
-    const trendClass = isPositive ? 'text-green-500 animate-pulse' : 'text-red-500 animate-pulse';
+    const trendClass = isPositive ? 'text-green-600 animate-pulse' : 'text-red-600 animate-pulse';
 
     return <span className={`${trendClass}`}>${prediction.toLocaleString()}</span>;
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 p-4">
-      <Card className="w-full max-w-6xl mx-auto bg-gray-800 border-gray-700">
-        <CardHeader className="border-b border-gray-700">
-          <CardTitle className="text-3xl font-bold text-blue-400">Crypto Investment Advisory Dashboard</CardTitle>
-          <CardDescription className="text-gray-300">Expert analysis and personalized advice for informed cryptocurrency investment decisions</CardDescription>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+      <Card className="w-full max-w-6xl mx-auto bg-white border-gray-200 shadow-xl">
+        <CardHeader className="border-b border-gray-200">
+          <CardTitle className="text-3xl font-bold text-purple-500">Crypto Investment Advisory Dashboard</CardTitle>
+          <CardDescription className="text-gray-600">Expert analysis and personalized advice for informed cryptocurrency investment decisions</CardDescription>
           <Input
             type="text"
             placeholder="Search for a coin..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="mt-4 bg-gray-700 text-white border-gray-600"
+            className="mt-4 bg-white text-gray-800 border-gray-300"
           />
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-b border-gray-700">
-                <TableHead className="text-gray-300">Coin</TableHead>
-                <TableHead className="text-gray-300">Current Price</TableHead>
-                <TableHead className="text-gray-300">Sentiment</TableHead>
-                <TableHead className="text-gray-300">Market Condition</TableHead>
-                <TableHead className="text-gray-300">
+              <TableRow className="border-b border-gray-200">
+                <TableHead className="text-gray-600">Coin</TableHead>
+                <TableHead className="text-gray-600">Current Price</TableHead>
+                <TableHead className="text-gray-600">Sentiment</TableHead>
+                <TableHead className="text-gray-600">Market Condition</TableHead>
+                <TableHead className="text-gray-600">
                   <ConfidenceTooltip content="Moderate confidence: Based on short-term market analysis">
                     7-Day Forecast <Info className="w-4 h-4 text-gray-400 inline-block ml-1" />
                   </ConfidenceTooltip>
                 </TableHead>
-                <TableHead className="text-gray-300">
+                <TableHead className="text-gray-600">
                   <ConfidenceTooltip content="Lower confidence: Long-term predictions are subject to higher uncertainty">
                     14-Day Forecast <Info className="w-4 h-4 text-gray-400 inline-block ml-1" />
                   </ConfidenceTooltip>
                 </TableHead>
-                <TableHead className="text-gray-300">Technical Indicators</TableHead>
+                <TableHead className="text-gray-600">Technical Indicators</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredData.map((crypto) => (
-                <TableRow key={crypto.symbol} className="hover:bg-gray-700/50 transition-colors border-b border-gray-700">
+                <TableRow key={crypto.symbol} className="hover:bg-gray-50 transition-colors border-b border-gray-200">
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <img src={crypto.imageUrl} alt={`${crypto.coin} logo`} width={24} height={24} />
-                      <span className="text-gray-200">{crypto.coin} ({crypto.symbol})</span>
+                      <span className="text-gray-800">{crypto.coin} ({crypto.symbol})</span>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
                             {/* <AlertTriangle className="text-yellow-500" /> */}
                           </TooltipTrigger>
-                          <TooltipContent className="bg-gray-700 text-white p-2 rounded-md">
+                          <TooltipContent className="bg-white text-gray-800 p-2 rounded-md shadow-lg">
                             <p>Key Event: {crypto.keyEvents}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-200">${crypto.currentPrice.toLocaleString()}</TableCell>
+                  <TableCell className="text-gray-800">${crypto.currentPrice.toLocaleString()}</TableCell>
                   <TableCell>{getSentimentBadge(crypto.sentiment)}</TableCell>
                   <TableCell>{getMarketConditionBadge(crypto.marketCondition)}</TableCell>
-                  <TableCell className="text-gray-200">
+                  <TableCell className="text-gray-800">
                     <PredictionTrend currentPrice={crypto.currentPrice} prediction={crypto.sevenDayPrediction} />
                   </TableCell>
-                  <TableCell className="text-gray-200">
+                  <TableCell className="text-gray-800">
                     <PredictionTrend currentPrice={crypto.currentPrice} prediction={crypto.fourteenDayPrediction} />
                   </TableCell>
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">View Indicators</Button>
+                        <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700">View Indicators</Button>
                       </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px] bg-gray-800 text-white">
+                      <DialogContent className="sm:max-w-[600px] bg-white text-gray-800">
                         <DialogHeader>
-                          <DialogTitle className="text-blue-400">Technical Indicators for {crypto.symbol}</DialogTitle>
-                          <DialogDescription className="text-gray-300">
+                          <DialogTitle className="text-purple-600">Technical Indicators for {crypto.symbol}</DialogTitle>
+                          <DialogDescription className="text-gray-600">
                             Detailed technical analysis indicators to inform your investment decisions.
                           </DialogDescription>
                         </DialogHeader>
@@ -187,9 +187,9 @@ export default function CryptoAdvisoryDashboard() {
                           <div className="grid grid-cols-2 gap-4 py-4">
                             {Object.entries(crypto.technicalIndicators).map(([key, value]) => (
                               <div key={key} className="flex items-center justify-between">
-                                <span className="font-medium text-blue-300">{key.replace(/_/g, ' ')}:</span>
+                                <span className="font-medium text-purple-600">{key.replace(/_/g, ' ')}:</span>
                                 <div className="flex items-center gap-2">
-                                  <span className="text-gray-200">
+                                  <span className="text-gray-800">
                                     {typeof value === 'number'
                                       ? key.includes('Percentage')
                                         ? `${value.toFixed(2)}%`
